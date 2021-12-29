@@ -1,0 +1,6 @@
+# Save `hadoop-x.y.z.tar.gz` here.
+#
+# wget https://downloads.apache.org/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz
+#
+
+*.tar.gz

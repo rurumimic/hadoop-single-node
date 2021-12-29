@@ -1,0 +1,20 @@
+# Hadoop
+- name: Unarchive hadoop dist
+  unarchive:
+    src: "dist/hadoop-{{ hadoop_version }}.tar.gz"
+    dest: /etc
+    creates: /etc/hadoop
+- name: Check directory
+  stat:
+    path: /etc/hadoop
+  register: dir
+- name: Rename directory
+  when: dir.stat.exists == False
+  shell: "mv /etc/hadoop-{{ hadoop_version }} /etc/hadoop"
+- name: Change owner
+  file:
+    path: /etc/hadoop
+    state: directory
+    recurse: yes
+    owner: root
+    group: root

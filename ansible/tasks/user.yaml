@@ -1,0 +1,92 @@
+# Create a group
+- name: hadoop group
+  group:
+    name: hadoop
+    state: present
+# Create users
+- name: hdfs
+  user:
+    name: hdfs
+    shell: /bin/bash
+    group: hadoop
+- name: yarn
+  user:
+    name: yarn
+    shell: /bin/bash
+    group: hadoop
+- name: mapred
+  user:
+    name: mapred
+    shell: /bin/bash
+    group: hadoop
+# Make SSH keys
+- name: Make ssh key
+  become_user: "{{ username }}"
+  shell: |
+    ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    chmod 0600 ~/.ssh/authorized_keys
+# SSH Key to others: hdfs, yarn, maprd
+- name: Create .ssh directory
+  become_user: "{{ item }}"
+  file:
+    path: "/home/{{ item }}/.ssh"
+    state: directory
+    owner: "{{ item }}"
+    group: hadoop
+    mode: 0700
+  with_items:
+    - hdfs
+    - yarn
+    - mapred
+- name: Copy ssh private key
+  copy:
+    remote_src: yes
+    src: "/home/{{ username }}/.ssh/id_rsa"
+    dest: "/home/{{ item }}/.ssh"
+    owner: "{{ item }}"
+    group: hadoop
+    mode: 0600
+  with_items:
+    - hdfs
+    - yarn
+    - mapred
+- name: Copy ssh authorized keys
+  copy:
+    remote_src: yes
+    src: "/home/{{ username }}/.ssh/authorized_keys"
+    dest: "/home/{{ item }}/.ssh"
+    owner: "{{ item }}"
+    group: hadoop
+    mode: 0600
+  with_items:
+    - hdfs
+    - yarn
+    - mapred
+- name: Copy SSH public key
+  copy:
+    remote_src: yes
+    src: "/home/{{ username }}/.ssh/id_rsa.pub"
+    dest: "/home/{{ item }}/.ssh"
+    owner: "{{ item }}"
+    group: hadoop
+    mode: 0644
+  with_items:
+    - hdfs
+    - yarn
+    - mapred
+# Add a line to known hosts
+- name: Get keyscan
+  shell: ssh-keyscan -t ecdsa localhost
+  register: keyscan
+- name: Add known hosts
+  become_user: "{{ item }}"
+  lineinfile:
+    name: "/home/{{ item }}/.ssh/known_hosts"
+    create: yes
+    line: "{{ keyscan.stdout }}"
+  with_items:
+    - "{{ username }}"
+    - hdfs
+    - yarn
+    - mapred
