@@ -3,7 +3,7 @@
 
 $ip = "192.168.56.101"
 $hostname = "single-hdfs"
-$fqdn = "single-hdfs.example.com" # Look `ansible/files/hadoop/core-site.xml` & `ansible/files/hadoop/mapred-site.xml` line 20
+$fqdn = "single-hdfs.example.com" # Look `ansible/files/hadoop/core-site.xml` & `ansible/files/hadoop/mapred-site.xml`
 $hadoop_version = "3.3.1"
 
 Vagrant.configure("2") do |config|
