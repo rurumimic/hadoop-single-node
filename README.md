@@ -38,9 +38,9 @@ Build a virtual machine cluster in a local environment using Vagrant, VirtualBox
 
 ### Ref files
 
-- `Vagrantfile`: L4 ~ L7
-- `ansible/files/hadoop/core-site.xml`: L20
-- `ansible/files/hadoop/mapred-site.xml`: L28
+- `Vagrantfile`: [L4 ~ L7](https://github.com/rurumimic/hadoop-single-node/blob/master/Vagrantfile#L4-L7)
+- `ansible/files/hadoop/core-site.xml`: [L20](https://github.com/rurumimic/hadoop-single-node/blob/master/ansible/files/hadoop/core-site.xml#L20)
+- `ansible/files/hadoop/mapred-site.xml`: [L28](https://github.com/rurumimic/hadoop-single-node/blob/master/ansible/files/hadoop/mapred-site.xml#L28)
 
 ---
 
